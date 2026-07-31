@@ -110,7 +110,18 @@ export function DocumentEditor({ document, profile, registerFlush }: DocumentEdi
   }
 
   function editorButton(label: string, action: () => void, active = false) {
-    return <button type="button" disabled={!canEdit} className={active ? "toolbar-button active" : "toolbar-button"} aria-label={label} title={label} onClick={action}>{label}</button>;
+    return <button
+      type="button"
+      disabled={!canEdit}
+      className={active ? "toolbar-button active" : "toolbar-button"}
+      aria-label={label}
+      title={label}
+      onMouseDown={(event) => {
+        // Keep the ProseMirror selection while using the toolbar.
+        event.preventDefault();
+        action();
+      }}
+    >{label}</button>;
   }
 
   return (
