@@ -109,8 +109,42 @@ export function DocumentEditor({ document, profile, registerFlush }: DocumentEdi
     setIsDirty(true);
   }
 
+  function normalizeSoftBreakParagraphs(): boolean {
+    if (!editor) return false;
+
+    const { doc, schema, tr } = editor.state;
+    const replacements: Array<{ from: number; to: number; blocks: ReturnType<typeof schema.nodes.paragraph.create>[] }> = [];
+
+    doc.descendants((node, position) => {
+      if (node.type !== schema.nodes.paragraph || !node.content.content.some((child) => child.type === schema.nodes.hardBreak)) return;
+
+      const blocks: ReturnType<typeof schema.nodes.paragraph.create>[] = [];
+      let line: Array<(typeof node.content.content)[number]> = [];
+
+      for (const child of node.content.content) {
+        if (child.type === schema.nodes.hardBreak) {
+          blocks.push(schema.nodes.paragraph.create(node.attrs, line));
+          line = [];
+        } else {
+          line.push(child);
+        }
+      }
+      blocks.push(schema.nodes.paragraph.create(node.attrs, line));
+      replacements.push({ from: position, to: position + node.nodeSize, blocks });
+    });
+
+    if (replacements.length === 0) return false;
+    for (const replacement of replacements.reverse()) {
+      tr.replaceWith(replacement.from, replacement.to, replacement.blocks);
+    }
+    editor.view.dispatch(tr);
+    return true;
+  }
+
   function applyHeading(level: 1 | 2) {
     if (!editor) return;
+
+    normalizeSoftBreakParagraphs();
 
     const { state } = editor;
     const { selection } = state;
@@ -136,6 +170,12 @@ export function DocumentEditor({ document, profile, registerFlush }: DocumentEdi
 
     // For a multi-block selection, only affect the paragraph that owns the cursor.
     editor.chain().focus().setTextSelection(selection.from).toggleHeading({ level }).run();
+  }
+
+  function applyBulletList() {
+    if (!editor) return;
+    normalizeSoftBreakParagraphs();
+    editor.chain().focus().toggleBulletList().run();
   }
 
   function editorButton(label: string, action: () => void, active = false) {
@@ -169,7 +209,7 @@ export function DocumentEditor({ document, profile, registerFlush }: DocumentEdi
         {editorButton("Bold", () => editor?.chain().focus().toggleBold().run(), editor?.isActive("bold"))}
         {editorButton("Italic", () => editor?.chain().focus().toggleItalic().run(), editor?.isActive("italic"))}
         {editorButton("Underline", () => editor?.chain().focus().toggleUnderline().run(), editor?.isActive("underline"))}
-        {editorButton("List", () => editor?.chain().focus().toggleBulletList().run(), editor?.isActive("bulletList"))}
+        {editorButton("List", applyBulletList, editor?.isActive("bulletList"))}
       </div>
       <EditorContent editor={editor} />
       {saveStatus === "error" && <button type="button" className="retry-button" onClick={() => void flush()}>{titleError ? "Fix title to save" : "Retry save"}</button>}
