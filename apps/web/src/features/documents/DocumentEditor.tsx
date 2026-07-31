@@ -109,6 +109,35 @@ export function DocumentEditor({ document, profile, registerFlush }: DocumentEdi
     setIsDirty(true);
   }
 
+  function applyHeading(level: 1 | 2) {
+    if (!editor) return;
+
+    const { state } = editor;
+    const { selection } = state;
+    const { $from, $to } = selection;
+
+    // Headings are block nodes. A partial selection in a paragraph becomes its
+    // own heading, rather than changing the full document or every selected block.
+    if (!selection.empty && $from.sameParent($to) && $from.parent.type.name === "paragraph") {
+      const paragraphStart = $from.start($from.depth);
+      const paragraphEnd = $from.end($from.depth);
+      const before = state.doc.slice(paragraphStart, selection.from).content;
+      const selected = state.doc.slice(selection.from, selection.to).content;
+      const after = state.doc.slice(selection.to, paragraphEnd).content;
+      const replacement = [];
+
+      if (before.size > 0) replacement.push($from.parent.type.create($from.parent.attrs, before));
+      replacement.push(state.schema.nodes.heading.create({ level }, selected));
+      if (after.size > 0) replacement.push($from.parent.type.create($from.parent.attrs, after));
+
+      editor.view.dispatch(state.tr.replaceWith($from.before($from.depth), $from.after($from.depth), replacement));
+      return;
+    }
+
+    // For a multi-block selection, only affect the paragraph that owns the cursor.
+    editor.chain().focus().setTextSelection(selection.from).toggleHeading({ level }).run();
+  }
+
   function editorButton(label: string, action: () => void, active = false) {
     return <button
       type="button"
@@ -135,8 +164,8 @@ export function DocumentEditor({ document, profile, registerFlush }: DocumentEdi
         {permission === "viewer" ? <span className="view-only-status">View only</span> : <><button type="button" className="secondary-button" onClick={() => void flush()}>Save now</button>{permission === "owner" && <SharePanel document={document} profile={profile} />}</>}
       </div>
       <div className="editor-toolbar" role="toolbar" aria-label="Text formatting">
-        {editorButton("H1", () => editor?.chain().focus().toggleHeading({ level: 1 }).run(), editor?.isActive("heading", { level: 1 }))}
-        {editorButton("H2", () => editor?.chain().focus().toggleHeading({ level: 2 }).run(), editor?.isActive("heading", { level: 2 }))}
+        {editorButton("H1", () => applyHeading(1), editor?.isActive("heading", { level: 1 }))}
+        {editorButton("H2", () => applyHeading(2), editor?.isActive("heading", { level: 2 }))}
         {editorButton("Bold", () => editor?.chain().focus().toggleBold().run(), editor?.isActive("bold"))}
         {editorButton("Italic", () => editor?.chain().focus().toggleItalic().run(), editor?.isActive("italic"))}
         {editorButton("Underline", () => editor?.chain().focus().toggleUnderline().run(), editor?.isActive("underline"))}
