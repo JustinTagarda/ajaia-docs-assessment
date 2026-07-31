@@ -3,7 +3,8 @@
 > Complete all bracketed fields only after the app is deployed and final verification is complete. Do not commit real account passwords to the repository; provide reviewer credentials through the submission folder or another authorized private channel.
 
 - Assessment reference: https://candidateassessments.ajaia.ai/attempt/S0l5ebSwfTmgPYrsNtYKm8TANXfIJpNq
-- Live app: [Firebase Hosting URL]
+- Live app: https://ajaia-docs-assessment.web.app
+- Public source repository: https://github.com/JustinTagarda/ajaia-docs-assessment
 - Source / Google Drive folder: [URL]
 - Walkthrough video: [public URL]
 
@@ -32,6 +33,5 @@
 
 ## Incomplete / next
 
-- Deploy the committed final Firestore Rules hardening.
-- Repeat the documented two-account acceptance flow against those Rules.
-- Deploy Firebase Hosting, record its URL, and add the walkthrough and source-folder links.
+- Add the public walkthrough URL and Google Drive source-folder URL.
+- Provide reviewer credentials only through the authorized private submission channel.

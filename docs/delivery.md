@@ -8,7 +8,7 @@
 
 **Stage 3 implementation complete; core manual verification reported:** local `.txt`/`.md` import (up to 1 MB) and sharing have been exercised against Firebase. The second-pass Rules hardening is checked in locally and must be deployed with approval before the final two-account acceptance flow marks the stage complete.
 
-**Stage 4 pending — delivery verification:** deploy the final Rules hardening, repeat the two-account acceptance flow, publish Firebase Hosting, and complete the reviewer artifacts. This stage changes deployment and submission state; it does not add product features.
+**Stage 4 deployment and acceptance verification complete:** the final Rules hardening was deployed, the two-account acceptance flow passed, and Firebase Hosting was published at [ajaia-docs-assessment.web.app](https://ajaia-docs-assessment.web.app). Remaining submission work is administrative: add the public walkthrough and Google Drive links through the authorized submission channel.
 
 The public GitHub repository uses `main` as its sole project branch. Keep its history linear and do not add environment-specific credentials, build output, or reviewer passwords.
 
@@ -21,18 +21,18 @@ The public GitHub repository uses `main` as its sole project branch. Keep its hi
 
 ## Verification checklist
 
-- With explicit approval, deploy the updated Firestore Rules before live Firebase checks.
-- Run tests, lint, and a production build before submission.
+- The final Firestore Rules were deployed successfully.
+- Tests, lint, production build, and dependency audit passed before deployment.
 - Confirm the deployed Firestore Rules prevent a viewer from writing and prevent an unshared user from reading through a direct URL.
 - Manually follow the acceptance flow in `docs/requirements.md` using two Firebase test users.
 - Test refresh, denied access after unsharing, invalid upload, and save failure messaging.
-- Verify Firebase Authentication, Firestore Rules, and the hosted SPA deployment before recording the walkthrough.
+- Firebase Authentication, Firestore Rules, and the hosted SPA deployment were verified before recording the walkthrough.
 
 ## Deployment sequence
 
-1. Use `npm run firebase:deploy:rules` or `npm run firebase:deploy:indexes` only after explicit approval to publish the respective Firebase configuration for live verification. Stage 3 introduces no new index.
-2. Do not publish Firebase Hosting while core implementation remains incomplete.
-3. After the two-user acceptance flow passes locally, run `npm run firebase:deploy` with explicit approval to deploy both the built SPA and rules.
+1. Final Firestore Rules were deployed after explicit approval.
+2. The two-account acceptance flow passed against the deployed Rules.
+3. `npm run firebase:deploy` then published Firebase Hosting and the current Firebase configuration.
 
 ## AI-native workflow note template
 

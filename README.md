@@ -4,7 +4,7 @@ A deliberately scoped Firebase-backed document editor for the Ajaia AI-Native Fu
 
 ## Delivery status
 
-The core document, import, and sharing flows are implemented. Local validation is passing (15 focused tests, TypeScript lint, production build, and dependency audit), and import/sharing have been manually exercised against Firebase. The final Stage 4 gate is to deploy the committed Rules hardening, rerun the two-account acceptance flow, and publish Firebase Hosting.
+The core document, import, and sharing flows are implemented and deployed. Local validation passed (15 focused tests, TypeScript lint, production build, and dependency audit), the final two-account acceptance flow passed against deployed Rules, and Firebase Hosting is live at [ajaia-docs-assessment.web.app](https://ajaia-docs-assessment.web.app).
 
 ## Source-control workflow
 
@@ -39,7 +39,7 @@ Create two Email/Password accounts. As the owner, share a document with the seco
 
 ## Deploy to Firebase
 
-First deploy the current Rules with `npm run firebase:deploy:rules` after approval, then complete the two-account acceptance flow. After it passes, run `npm run firebase:deploy`. This builds the web app and deploys Firebase Hosting plus the Firestore rules. Firebase configuration values in `VITE_*` variables are public web-app identifiers; no private server secret belongs in this repository.
+For a future release, first deploy the current Rules with `npm run firebase:deploy:rules` after approval, then complete the two-account acceptance flow. Run `npm run firebase:deploy` to build the web app and deploy Firebase Hosting plus the Firestore rules. Firebase configuration values in `VITE_*` variables are public web-app identifiers; no private server secret belongs in this repository.
 
 ## Project documentation
 

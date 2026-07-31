@@ -24,4 +24,5 @@ The implementation intentionally rejected a custom API/server, Cloud Functions, 
 - TypeScript lint, 15 focused Vitest tests, a production build, Firebase configuration validation, and dependency audit were run after implementation.
 - Firestore Rules were compiled and deployed for the initial two-account sharing verification.
 - Manual Firebase checks confirmed sharing and a successful text/Markdown import.
-- Remaining truthful verification: deploy the final Rules hardening, repeat the complete two-account acceptance flow, verify the hosted app, and record the walkthrough URL.
+- The final Rules hardening was deployed; the complete two-account acceptance flow passed; Firebase Hosting was published at `https://ajaia-docs-assessment.web.app`.
+- Remaining truthful submission item: record the public walkthrough URL after it is created.
