@@ -2,6 +2,14 @@
 
 A deliberately scoped Firebase-backed document editor for the Ajaia AI-Native Full Stack Developer assignment.
 
+## Delivery status
+
+The core document, import, and sharing flows are implemented. Local validation is passing (15 focused tests, TypeScript lint, production build, and dependency audit), and import/sharing have been manually exercised against Firebase. The final Stage 4 gate is to deploy the committed Rules hardening, rerun the two-account acceptance flow, and publish Firebase Hosting.
+
+## Source-control workflow
+
+This assessment project uses the public repository's `main` branch only. Changes are reviewed and committed directly to `main`; no long-lived feature or release branches are used.
+
 ## Stack
 
 - React, TypeScript, Vite, TanStack Query, and Tiptap
@@ -31,7 +39,7 @@ Create two Email/Password accounts. As the owner, share a document with the seco
 
 ## Deploy to Firebase
 
-After the documented two-user acceptance flow passes, run `npm run firebase:deploy`. This builds the web app and deploys Firebase Hosting plus the Firestore rules. For pre-deployment Firebase verification, use `npm run firebase:deploy:rules` only. Firebase configuration values in `VITE_*` variables are public web-app identifiers; no private server secret belongs in this repository.
+First deploy the current Rules with `npm run firebase:deploy:rules` after approval, then complete the two-account acceptance flow. After it passes, run `npm run firebase:deploy`. This builds the web app and deploys Firebase Hosting plus the Firestore rules. Firebase configuration values in `VITE_*` variables are public web-app identifiers; no private server secret belongs in this repository.
 
 ## Project documentation
 

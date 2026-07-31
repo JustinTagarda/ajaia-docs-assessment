@@ -22,6 +22,8 @@ Stage 1 and Stage 2 are complete and live-verified. Stage 3's sharing and import
 
 ## Development rules
 
+- Use the `main` branch as the sole project branch. Do not create feature, release, or deployment branches unless the user explicitly changes this workflow.
+- Commit coherent, reviewed changes before publishing; do not force-push or rewrite the public `main` history.
 - Keep the implementation intentionally scoped to the documented MVP. Do not add stretch features before the core flows work end to end.
 - Use strict TypeScript. Avoid `any`; validate all user-controlled data at the client/data boundary.
 - Keep client state Firestore-backed. Treat rich-text document JSON as untrusted input and validate its shape/size before persistence.

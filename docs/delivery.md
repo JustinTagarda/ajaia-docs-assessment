@@ -8,12 +8,16 @@
 
 **Stage 3 implementation complete; core manual verification reported:** local `.txt`/`.md` import (up to 1 MB) and sharing have been exercised against Firebase. The second-pass Rules hardening is checked in locally and must be deployed with approval before the final two-account acceptance flow marks the stage complete.
 
+**Stage 4 pending — delivery verification:** deploy the final Rules hardening, repeat the two-account acceptance flow, publish Firebase Hosting, and complete the reviewer artifacts. This stage changes deployment and submission state; it does not add product features.
+
+The public GitHub repository uses `main` as its sole project branch. Keep its history linear and do not add environment-specific credentials, build output, or reviewer passwords.
+
 ## Priority order
 
 1. Persisted document create/edit/reopen flow with a usable rich-text toolbar.
 2. Firestore-rule-enforced sharing and clear owned/shared lists.
 3. Text/Markdown import with validation and errors.
-4. Firebase two-account verification, then deployment, walkthrough, and submission materials.
+4. Stage 4: final Rules deployment, two-account verification, Firebase Hosting, walkthrough, and submission materials.
 
 ## Verification checklist
 

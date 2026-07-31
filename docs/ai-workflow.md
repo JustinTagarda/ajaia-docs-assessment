@@ -1,24 +1,27 @@
 # AI-native workflow note
 
-> Complete this document truthfully as implementation progresses. This starter is not a claim that later work was completed.
+> This note records the implementation work completed so far. Update the final deployment and walkthrough items truthfully before submission.
 
 ## Tools used
 
-- Codex: requirements analysis, scaffold creation, documentation, code assistance, and verification support.
-- [Add other tools actually used.]
+- Codex: assessment analysis, technology selection, repository scaffolding, implementation assistance, documentation, code review, and local verification support.
+- Firebase CLI: Firestore Rules compilation and deployment.
+- Firebase Authentication and Firestore: live identity, persistence, and two-account feature checks.
 
 ## Material acceleration
 
-Codex accelerated conversion of the assessment into an intentionally scoped MVP, a Firebase-ready repository structure, and documented acceptance criteria. [Add implementation-specific examples as they occur.]
+Codex accelerated conversion of the assessment into an intentionally scoped MVP, a Firebase-ready repository structure, and documented acceptance criteria. It also assisted with typed Firestore repository boundaries, rich-text persistence, serialized saving, import validation, access-role behavior, and focused tests.
 
 ## Decisions reviewed or rejected
 
 The initial Express/PostgreSQL architecture was rejected before feature work because it adds deployment and operational complexity without improving this time-boxed product slice. Firebase Authentication, Firestore, and Hosting provide durable identity, sharing data, security rules, and a single deployment path on the no-cost plan.
 
-[Add code or UX outputs that you changed or rejected during implementation.]
+The implementation intentionally rejected a custom API/server, Cloud Functions, binary storage, `.docx` conversion, real-time collaboration, and optional stretch features. This kept the deployed surface to Firebase Authentication, Firestore, and Hosting while covering the assignment's core document, sharing, file-import, and persistence requirements.
 
 ## Verification
 
-- TypeScript validation was run after initial scaffolding.
 - The source assessment was reviewed directly on 2026-07-31.
-- [Add tests, two-user acceptance checks, Firestore-rules review, production build, and deployed-app verification performed later.]
+- TypeScript lint, 15 focused Vitest tests, a production build, Firebase configuration validation, and dependency audit were run after implementation.
+- Firestore Rules were compiled and deployed for the initial two-account sharing verification.
+- Manual Firebase checks confirmed sharing and a successful text/Markdown import.
+- Remaining truthful verification: deploy the final Rules hardening, repeat the complete two-account acceptance flow, verify the hosted app, and record the walkthrough URL.
