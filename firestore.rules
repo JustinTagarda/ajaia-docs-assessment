@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isOwner() { return signedIn() && resource.data.ownerId == request.auth.uid; }
+    function hasAccess() {
+      return signedIn() && request.auth.uid in resource.data.access.keys() &&
+        (resource.data.access[request.auth.uid] == 'viewer' || resource.data.access[request.auth.uid] == 'editor');
+    }
+    function canEdit() { return isOwner() || (hasAccess() && resource.data.access[request.auth.uid] == 'editor'); }
+    function preservesOwnership() {
+      return request.resource.data.ownerId == resource.data.ownerId &&
+        request.resource.data.ownerEmail == resource.data.ownerEmail &&
+        request.resource.data.createdAt == resource.data.createdAt;
+    }
+
+    match /users/{userId} {
+      allow create: if signedIn() && request.auth.uid == userId &&
+        request.resource.data.email == request.auth.token.email &&
+        request.resource.data.name is string &&
+        request.resource.data.keys().hasOnly(['email', 'name', 'createdAt']);
+      allow read: if signedIn();
+      allow update: if signedIn() && request.auth.uid == userId &&
+        request.resource.data.email == resource.data.email &&
+        request.resource.data.createdAt == resource.data.createdAt &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name']);
+      allow delete: if signedIn() && request.auth.uid == userId;
+    }
+
+    match /documents/{documentId} {
+      allow create: if signedIn() &&
+        request.resource.data.ownerId == request.auth.uid &&
+        request.resource.data.ownerEmail == request.auth.token.email &&
+        request.resource.data.access is map &&
+        request.resource.data.keys().hasOnly(['title', 'content', 'ownerId', 'ownerEmail', 'access', 'createdAt', 'updatedAt']);
+      allow read: if isOwner() || hasAccess();
+      allow update: if preservesOwnership() &&
+        ((isOwner() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title', 'content', 'access', 'updatedAt'])) ||
+        (canEdit() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title', 'content', 'updatedAt'])));
+      allow delete: if isOwner();
+    }
+  }
+}

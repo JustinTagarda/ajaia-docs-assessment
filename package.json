@@ -1,0 +1,25 @@
+{
+  "name": "ajaisia-docs-assessment",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AI-native full-stack document workspace assessment",
+  "workspaces": ["apps/web"],
+  "scripts": {
+    "dev": "npm run dev --workspace=@ajaisia/web",
+    "dev:web": "npm run dev --workspace=@ajaisia/web",
+    "build": "npm run build --workspace=@ajaisia/web",
+    "test": "npm run test --workspace=@ajaisia/web",
+    "lint": "npm run lint --workspace=@ajaisia/web",
+    "format": "prettier --write .",
+    "firebase:login": "npx --yes firebase-tools@latest login",
+    "firebase:deploy:rules": "npx --yes firebase-tools@latest deploy --only firestore:rules",
+    "firebase:deploy:indexes": "npx --yes firebase-tools@latest deploy --only firestore:indexes",
+    "firebase:deploy": "npm run build && npx --yes firebase-tools@latest deploy"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
